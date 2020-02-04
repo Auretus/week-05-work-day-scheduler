@@ -83,5 +83,6 @@ $(".fa-save").on("click", function(e) {
     .attr("data-hour-slot");
   console.log("Save button for " + hourSlot + " clicked.");
   appointments[hourSlot] = $("#" + hourSlot).val();
+  console.log(appointments);
   writeStorage();
 });
