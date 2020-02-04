@@ -1,0 +1,11 @@
+.pastHour {
+  background-color: #aaa;
+}
+
+.presentHour {
+  background-color: #aa0000;
+}
+
+.futureHour {
+  background-color: #00aa00;
+}
