@@ -53,8 +53,8 @@ function init() {
   if (storedAppts != null) appointments = storedAppts;
   writeStorage();
   for (var i = 0; i < 9; i++) {
+    // color according to timeframe 
     var currentSlot = whenIsThis(i+9);
-    // console.log(currentSlot); 
     if (currentSlot === "past") {
       $("#" + i + "h").addClass("pastHour");
       $("#" + i).addClass("pastHour");
@@ -81,8 +81,6 @@ $(".fa-save").on("click", function(e) {
     .parent()
     .parent()
     .attr("data-hour-slot");
-  console.log("Save button for " + hourSlot + " clicked.");
   appointments[hourSlot] = $("#" + hourSlot).val();
-  console.log(appointments);
   writeStorage();
 });
