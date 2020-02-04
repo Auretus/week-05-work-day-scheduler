@@ -19,10 +19,11 @@ function checkHour() {
 
 function readStorage() {
   /* arguments:
-   * returns:
-   * purpose: Pull data from local storage and populate the appointments array
+   * returns: array
+   * purpose: Pull data from local storage and return as an array
    */
-  console.log("readStorage() called");
+  // console.log("readStorage() called");
+  return JSON.parse(localStorage.getItem("hw05-scheduler-appointments"));
 }
 
 function writeStorage() {
@@ -30,7 +31,8 @@ function writeStorage() {
    * returns:
    * purpose: Write the contents of the appointments array to local storage
    */
-  console.log("writeStorage() called");
+  // console.log("writeStorage() called");
+  localStorage.setItem("hw05-scheduler-appointments", JSON.stringify(appointments));
 }
 
 function whenIsThis(hourSlot) {
@@ -40,26 +42,29 @@ function whenIsThis(hourSlot) {
    */
   currentHour = checkHour();
   if (hourSlot < currentHour) return "past";
-  if (hourslot === currentHour) return "present";
-  if (hourslot > currentHour) return "future";
+  if (hourSlot === currentHour) return "present";
+  if (hourSlot > currentHour) return "future";
 }
 
 function init() {
   // grab the current date using moment.js
   $("#currentDay").text(moment().format("dddd, YYYY MMM. DD"));
-  readStorage();
-  writeStorage();
+  var storedAppts = readStorage();
+  console.log(storedAppts);
+  if (storedAppts) appointments = storedAppts;
+  // writeStorage();
   for (var i = 0; i < 9; i++) {
-    var currentSlot = whenIsThis(i);
+    var currentSlot = whenIsThis(i+9);
+    // console.log(currentSlot); 
     if (currentSlot === "past") {
-      $(i + "h").addClass("pastHour");
-      $(i).addClass("pastHour");
+      $("#" + i + "h").addClass("pastHour");
+      $("#" + i).addClass("pastHour");
     } else if (currentSlot === "present") {
-      $(i + "h").addClass("presentHour");
-      $(i).addClass("presentHour");
+      $("#" + i + "h").addClass("presentHour");
+      $("#" + i).addClass("presentHour");
     } else {
-      $(i + "h").addClass("futureHour");
-      $(i).addClass("futureHour");
+      $("#" + i + "h").addClass("futureHour");
+      $("#" + i).addClass("futureHour");
     }
   }
 }
@@ -67,13 +72,16 @@ function init() {
 // startup and event handlers
 init();
 
-$(".fa-save").on("click", function() {
+$(".fa-save").on("click", function(e) {
   /* target: whichever of the save buttons got clicked
    * purpose: grab the contents of the associated textarea and store them in the proper slot in the appointments[] array.
    */
+  e.preventDefault();
   var hourSlot = $(this)
     .parent()
     .parent()
     .attr("data-hour-slot");
-  // console.log("Save button for " + hourSlot + " clicked".);
+  console.log("Save button for " + hourSlot + " clicked.");
+  appointments[hourSlot] = $("#" + hourSlot);
+  writeStorage();
 });
