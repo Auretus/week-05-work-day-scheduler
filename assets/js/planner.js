@@ -50,9 +50,8 @@ function init() {
   // grab the current date using moment.js
   $("#currentDay").text(moment().format("dddd, YYYY MMM. DD"));
   var storedAppts = readStorage();
-  console.log(storedAppts);
-  if (storedAppts) appointments = storedAppts;
-  // writeStorage();
+  if (storedAppts != null) appointments = storedAppts;
+  writeStorage();
   for (var i = 0; i < 9; i++) {
     var currentSlot = whenIsThis(i+9);
     // console.log(currentSlot); 
@@ -66,6 +65,7 @@ function init() {
       $("#" + i + "h").addClass("futureHour");
       $("#" + i).addClass("futureHour");
     }
+    $("#" + i).val(appointments[i]);
   }
 }
 
@@ -82,6 +82,6 @@ $(".fa-save").on("click", function(e) {
     .parent()
     .attr("data-hour-slot");
   console.log("Save button for " + hourSlot + " clicked.");
-  appointments[hourSlot] = $("#" + hourSlot);
+  appointments[hourSlot] = $("#" + hourSlot).val();
   writeStorage();
 });
